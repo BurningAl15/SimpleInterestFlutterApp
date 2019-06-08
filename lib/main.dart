@@ -12,6 +12,11 @@ void main(){
       debugShowCheckedModeBanner: false,
       title:'Simple Interest Calculator App',
       home:SIForm(),
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Colors.indigo,
+        accentColor: Colors.indigoAccent,
+      ),
     )
   );
 }
@@ -30,12 +35,13 @@ class _SIFormState extends State<SIForm>
   @override
   Widget build(BuildContext context)
   {
+    TextStyle textStyle=Theme.of(context).textTheme.title;
     return Scaffold(
-      backgroundColor: backgroundColor,
+      //backgroundColor: backgroundColor,
       //resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title:Text('Simple Interest App'),
-        backgroundColor: appBarColor,
+        //backgroundColor: appBarColor,
       ),
       body:Container(
         child:ListView(
@@ -45,6 +51,7 @@ class _SIFormState extends State<SIForm>
               padding: EdgeInsets.only(top:_minimumPadding,bottom: _minimumPadding),
               child: TextField(
                 keyboardType:TextInputType.number,
+                style: textStyle,
                 decoration: InputDecoration(
                     labelText: 'Principal',
                     hintText: 'Enter Principal e.g. 1200',
@@ -52,31 +59,24 @@ class _SIFormState extends State<SIForm>
                       borderRadius: BorderRadius.circular(5.0),
 
                     ),
-                    labelStyle: TextStyle(
-                        color: textColor
-                    ),
-                    hintStyle: TextStyle(
-                        color: textColor
-                    )
+                    labelStyle: textStyle,
+                    hintStyle: textStyle,
                 ),
               ),
             ),
-
             Padding(
               padding: EdgeInsets.only(top:_minimumPadding,bottom: _minimumPadding),
-              child: TextField(              keyboardType:TextInputType.number,
-                  decoration: InputDecoration(
+              child: TextField(
+                keyboardType:TextInputType.number,
+                style: textStyle,
+                decoration: InputDecoration(
                       labelText: 'Rate of Interest',
                       hintText: 'In percent',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
                       ),
-                      labelStyle: TextStyle(
-                          color: textColor
-                      ),
-                      hintStyle: TextStyle(
-                          color: textColor
-                      )
+                      labelStyle: textStyle,
+                      hintStyle: textStyle,
                   ),
                 ),
             ),
@@ -88,6 +88,7 @@ class _SIFormState extends State<SIForm>
                     Expanded(
                       child:TextField(
                         keyboardType:TextInputType.number,
+                        style: textStyle,
                         decoration: InputDecoration(
                             labelText: 'Term',
                             hintText: 'Time in years',
@@ -95,12 +96,8 @@ class _SIFormState extends State<SIForm>
                               borderRadius: BorderRadius.circular(5.0),
 
                             ),
-                            labelStyle: TextStyle(
-                                color: textColor
-                            ),
-                            hintStyle: TextStyle(
-                                color: textColor
-                            )
+                            labelStyle: textStyle,
+                            hintStyle: textStyle,
                         ),
                       ),
                     ),
@@ -119,9 +116,7 @@ class _SIFormState extends State<SIForm>
                               child:Text(
                                 value,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: textColor
-                                ),
+                                style: textStyle
                               ),
                             );
                           }).toList(),
@@ -133,21 +128,30 @@ class _SIFormState extends State<SIForm>
                   ],
                 )
             ),
-
             Padding(
               padding: EdgeInsets.only(top:_minimumPadding,bottom: _minimumPadding),
                 child: Row(
                   children: <Widget>[
                     Expanded(
                       child:RaisedButton(
-                        child: Text('Calculate'),
+                        color: Theme.of(context).accentColor,
+                        textColor: Theme.of(context).primaryColorDark,
+                        child: Text(
+                          'Calculate',
+                          textScaleFactor: 1.5,
+                        ),
                         onPressed: (){
                         },
                       )
                     ),
                     Expanded(
                         child:RaisedButton(
-                          child: Text('Reset'),
+                          color: Theme.of(context).primaryColorDark,
+                          textColor: Theme.of(context).primaryColorLight,
+                          child: Text(
+                              'Reset',
+                              textScaleFactor: 1.5,
+                          ),
                           onPressed: (){
                           },
                         )
@@ -160,9 +164,7 @@ class _SIFormState extends State<SIForm>
               child: Text(
                 'Todo Text',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: textColor
-                ),
+                style: textStyle ,
               ),
             )
           ],
