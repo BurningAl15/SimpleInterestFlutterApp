@@ -31,6 +31,24 @@ class SIForm extends StatefulWidget{
 class _SIFormState extends State<SIForm>
 {
   var _currencies=['Rupees','Dollars','Pounds'];
+  var _currentItemSelected='';
+  var displayResult='';
+
+  @override
+  void initState(){
+    super.initState();
+    _currentItemSelected=_currencies[0];
+  }
+
+  TextEditingController principalController=TextEditingController();
+  TextEditingController rateOfInterestController=TextEditingController();
+  TextEditingController termController=TextEditingController();
+
+  void _onDropDownItemSelected(String newValueSelected){
+    setState((){
+      this._currentItemSelected=newValueSelected;
+    });
+  }
 
   @override
   Widget build(BuildContext context)
@@ -52,6 +70,7 @@ class _SIFormState extends State<SIForm>
               child: TextField(
                 keyboardType:TextInputType.number,
                 style: textStyle,
+                controller: principalController,
                 decoration: InputDecoration(
                     labelText: 'Principal',
                     hintText: 'Enter Principal e.g. 1200',
@@ -69,6 +88,7 @@ class _SIFormState extends State<SIForm>
               child: TextField(
                 keyboardType:TextInputType.number,
                 style: textStyle,
+                controller: rateOfInterestController,
                 decoration: InputDecoration(
                       labelText: 'Rate of Interest',
                       hintText: 'In percent',
@@ -89,6 +109,7 @@ class _SIFormState extends State<SIForm>
                       child:TextField(
                         keyboardType:TextInputType.number,
                         style: textStyle,
+                        controller: termController,
                         decoration: InputDecoration(
                             labelText: 'Term',
                             hintText: 'Time in years',
@@ -108,7 +129,6 @@ class _SIFormState extends State<SIForm>
 
                     Expanded(
                         child:DropdownButton<String>(
-
                           items:_currencies.map((String value)
                           {
                             return DropdownMenuItem<String>(
@@ -120,8 +140,10 @@ class _SIFormState extends State<SIForm>
                               ),
                             );
                           }).toList(),
-                          value:'Dollars',
+                          value: _currentItemSelected,
                           onChanged: (String newValueSelected){
+                            _onDropDownItemSelected(newValueSelected);
+                            //_currentItemSelected=newValueSelected;
                           },
                         )
                     ),
@@ -141,6 +163,9 @@ class _SIFormState extends State<SIForm>
                           textScaleFactor: 1.5,
                         ),
                         onPressed: (){
+                          setState((){
+                            this.displayResult=_calculateTotalReturns();
+                          });
                         },
                       )
                     ),
@@ -153,6 +178,9 @@ class _SIFormState extends State<SIForm>
                               textScaleFactor: 1.5,
                           ),
                           onPressed: (){
+                            setState(() {
+                              _reset();
+                            });
                           },
                         )
                     ),
@@ -162,7 +190,7 @@ class _SIFormState extends State<SIForm>
             Padding(
               padding: EdgeInsets.all(_minimumPadding*2),
               child: Text(
-                'Todo Text',
+                displayResult,
                 textAlign: TextAlign.center,
                 style: textStyle ,
               ),
@@ -173,16 +201,37 @@ class _SIFormState extends State<SIForm>
 
     );
   }
+
+  Widget getImageAsset(){
+    AssetImage assetImage=AssetImage('Assets/images/INART_Logo.png');
+    Image image=Image(image:assetImage,width:125.0,height:125.0,);
+
+    return Center(
+        child: Container(
+          child:image,
+          margin:EdgeInsets.all(_minimumPadding*10),
+        )
+    );
+  }
+
+  String _calculateTotalReturns(){
+    double principal= double.parse(principalController.text);
+    double rateOfInterest= double.parse(rateOfInterestController.text);
+    double term= double.parse(termController.text);
+
+    double totalAmoutnPayable=principal+(principal*rateOfInterest*term)/100;
+
+    String result= 'After $term years, your investment will be $totalAmoutnPayable $_currentItemSelected';
+    return result;
+  }
+
+  void _reset(){
+    principalController.text='';
+    rateOfInterestController.text='';
+    termController.text='';
+    displayResult='';
+    _currentItemSelected=_currencies[0];
+  }
 }
 
-Widget getImageAsset(){
-  AssetImage assetImage=AssetImage('Assets/images/INART_Logo.png');
-  Image image=Image(image:assetImage,width:125.0,height:125.0,);
 
-  return Center(
-     child: Container(
-         child:image,
-         margin:EdgeInsets.all(_minimumPadding*10),
-     )
-  );
-}
